@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:food_app/core/constants/app_colors.dart';
+import 'package:food_app/features/auth/views/login_view.dart';
 import 'package:food_app/features/auth/widgets/custom_auth_button.dart';
+import 'package:food_app/root.dart';
 import 'package:food_app/shared/custom_text.dart';
 import 'package:food_app/shared/custom_text_form_field.dart';
 import 'package:gap/gap.dart';
@@ -68,9 +69,41 @@ class SignupView extends StatelessWidget {
                     text: 'Signup',
                     onTap: () {
                       if (formKey.currentState!.validate()) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => Root()),
+                        );
                         print('Signup');
                       }
                     },
+                  ),
+                  Gap(50),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomText(
+                        text: 'Already have an account? ',
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginView(),
+                            ),
+                          );
+                        },
+                        child: CustomText(
+                          text: 'Login',
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

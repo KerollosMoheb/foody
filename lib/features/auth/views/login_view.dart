@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:food_app/core/constants/app_colors.dart';
+import 'package:food_app/features/auth/views/signup_view.dart';
 import 'package:food_app/features/auth/widgets/custom_auth_button.dart';
+import 'package:food_app/root.dart';
 import 'package:food_app/shared/custom_text.dart';
 import 'package:food_app/shared/custom_text_form_field.dart';
 import 'package:gap/gap.dart';
@@ -52,11 +54,44 @@ class LoginView extends StatelessWidget {
                   CustomAuthButton(
                     text: 'Login',
                     onTap: () {
-                      if (formKey.currentState!.validate()) {
+                      //    if (formKey.currentState!.validate()) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => Root()),
+                      );
                         print('Login');
-                      }
+                      //  }
                     },
                   ),
+                  Gap(50),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomText(
+                        text: 'Don\'t have an account? ',
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignupView(),
+                            ),
+                          );
+                        },
+                        child: CustomText(
+                          text: 'Signup',
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                  
                 ],
               ),
             ),

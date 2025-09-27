@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/features/home/widgets/card_item.dart';
 import 'package:food_app/features/home/widgets/food_category.dart';
-import 'package:food_app/features/home/widgets/seatch_field.dart';
+import 'package:food_app/features/home/widgets/search_field.dart';
 import 'package:food_app/features/home/widgets/user_header.dart';
+import 'package:food_app/features/product/views/product_details_view.dart';
 import 'package:gap/gap.dart';
 
 class HomeView extends StatefulWidget {
@@ -27,7 +28,6 @@ class _HomeViewState extends State<HomeView> {
             SliverAppBar(
               elevation: 0,
               pinned: true,
-              floating: false,
               scrolledUnderElevation: 0,
               backgroundColor: Colors.white,
               toolbarHeight: 170,
@@ -35,7 +35,7 @@ class _HomeViewState extends State<HomeView> {
               flexibleSpace: Padding(
                 padding: EdgeInsets.only(top: 38, right: 20, left: 20),
                 child: Column(
-                  children: [UserHeader(), Gap(20), SeatchField(), Gap(5)],
+                  children: [UserHeader(), Gap(20), SearchField(), Gap(5)],
                 ),
               ),
             ),
@@ -66,11 +66,21 @@ class _HomeViewState extends State<HomeView> {
                   crossAxisSpacing: 10,
                 ),
                 delegate: SliverChildBuilderDelegate((context, index) {
-                  return CardItem(
-                    image: 'assets/test/test.png',
-                    title: 'Cheeseburger',
-                    description: 'Wendy\'s Burger',
-                    rating: '4.9',
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductDetailsView(),
+                        ),
+                      );
+                    },
+                    child: CardItem(
+                      image: 'assets/test/test.png',
+                      title: 'Cheeseburger',
+                      description: 'Wendy\'s Burger',
+                      rating: '4.9',
+                    ),
                   );
                 }, childCount: 6),
               ),

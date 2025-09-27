@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/features/auth/views/login_view.dart';
-import 'package:food_app/features/auth/views/signup_view.dart';
-import 'package:food_app/root.dart';
 import 'package:food_app/splash_view.dart';
 
 void main() {
@@ -15,7 +12,8 @@ class Foody extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
      debugShowCheckedModeBanner: false,
-     home: Root(),
+      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
+      home: SplashView(),
     );
   }
 }
