@@ -97,7 +97,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     ],
                   ),
                   Spacer(),
-                  CustomButton(text: 'Add to Cart', onTap: () {}),
+                  CustomButton(text: 'Add to Cart', onTap: () {}, width: 150),
                 ],
               ),
               Gap(100),

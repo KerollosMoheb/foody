@@ -77,7 +77,7 @@ class _CartViewState extends State<CartView> {
               ],
             ),
             Spacer(),
-            CustomButton(text: 'Checkout', onTap: () {}),
+            CustomButton(text: 'Checkout', onTap: () {}, width: 150),
           ],
         ),
       ),
