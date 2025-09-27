@@ -3,10 +3,18 @@ import 'package:food_app/core/constants/app_colors.dart';
 import 'package:food_app/shared/custom_text.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, required this.text, this.onTap, this.width, this.color});
+  const CustomButton({
+    super.key,
+    required this.text,
+    this.onTap,
+    this.width,
+    this.color,
+    this.height,
+  });
   final String text;
   final Function()? onTap;
   final double? width;
+  final double? height;
   final Color? color;
 
   @override
@@ -15,6 +23,7 @@ class CustomButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: width,
+        height: height,
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
         decoration: BoxDecoration(
           color: color ?? AppColors.primaryColor,
@@ -23,7 +32,7 @@ class CustomButton extends StatelessWidget {
         child: Center(
           child: CustomText(
             text: text,
-            fontSize: 18,
+            fontSize: 16,
             color: Colors.white,
             fontWeight: FontWeight.w600,
           ),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/features/orderHistory/views/order_history_view.dart';
 import 'package:food_app/root.dart';
-import 'package:food_app/splash_view.dart';
 
 void main() {
   runApp(const Foody());

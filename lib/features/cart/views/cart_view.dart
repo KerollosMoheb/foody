@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/features/cart/widgets/cart_item.dart';
+import 'package:food_app/features/checkout/views/checkout_view.dart';
 import 'package:food_app/shared/custom_button.dart';
 import 'package:food_app/shared/custom_text.dart';
 
@@ -77,7 +78,17 @@ class _CartViewState extends State<CartView> {
               ],
             ),
             Spacer(),
-            CustomButton(text: 'Checkout', onTap: () {}, width: 150),
+            CustomButton(
+              text: 'Checkout',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CheckoutView()),
+                );
+              },
+              width: 150,
+              height: 50,
+            ),
           ],
         ),
       ),
