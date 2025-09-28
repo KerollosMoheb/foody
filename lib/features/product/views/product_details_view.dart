@@ -81,8 +81,30 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   ),
                 ),
               ),
-              Gap(30),
-              Row(
+              Gap(150),
+            ],
+          ),
+        ),
+      ),
+      bottomSheet: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade800,
+              blurRadius: 15,
+              offset: Offset(0, 0),
+            ),
+          ],
+        ),
+        height: 120,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: Row(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,10 +119,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     ],
                   ),
                   Spacer(),
-                  CustomButton(text: 'Add to Cart', onTap: () {}, width: 150),
-                ],
-              ),
-              Gap(100),
+              CustomButton(text: 'Add to Cart', onTap: () {}, width: 150),
             ],
           ),
         ),

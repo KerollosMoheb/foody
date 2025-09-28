@@ -22,6 +22,7 @@ class LoginView extends StatelessWidget {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
+        resizeToAvoidBottomInset: false,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -91,8 +92,24 @@ class LoginView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
+                  Gap(30),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => Root()),
+                      );
+                      print('Guest');
+                    },
+                    child: CustomText(
+                      text: 'Continue as Guest',
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                    ),
+                  )
                 ],
+                
               ),
             ),
           ),

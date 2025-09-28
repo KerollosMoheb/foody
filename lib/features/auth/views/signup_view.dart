@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:food_app/core/constants/app_colors.dart';
 import 'package:food_app/features/auth/views/login_view.dart';
 import 'package:food_app/features/auth/widgets/custom_auth_button.dart';
-import 'package:food_app/root.dart';
 import 'package:food_app/shared/custom_text.dart';
 import 'package:food_app/shared/custom_text_form_field.dart';
 import 'package:gap/gap.dart';
@@ -16,13 +15,14 @@ class SignupView extends StatelessWidget {
     TextEditingController nameController = TextEditingController();
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
-    TextEditingController confirmPasswordController = TextEditingController();
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     return GestureDetector(
+      
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: AppColors.primaryColor,
         body: Center(
           child: Padding(
@@ -58,21 +58,11 @@ class SignupView extends StatelessWidget {
                     isPassword: true,
                     controller: passwordController,
                   ),
-                  Gap(20),
-                  CustomTextFormField(
-                    hintText: 'Confirm Password',
-                    isPassword: true,
-                    controller: confirmPasswordController,
-                  ),
                   Gap(30),
                   CustomAuthButton(
                     text: 'Signup',
                     onTap: () {
                       if (formKey.currentState!.validate()) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => Root()),
-                        );
                         print('Signup');
                       }
                     },
@@ -89,7 +79,7 @@ class SignupView extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => LoginView(),
