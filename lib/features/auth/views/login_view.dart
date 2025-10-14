@@ -21,96 +21,106 @@ class LoginView extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: AppColors.primaryColor,
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.white,
         body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Form(
-              key: formKey,
-              child: Column(
-                children: [
-                  Gap(100),
-                  SvgPicture.asset('assets/logo/logo.svg'),
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                Gap(200),
+                SvgPicture.asset(
+                  'assets/logo/logo.svg',
+                  color: AppColors.primaryColor,
+                ),
                   Gap(10),
                   CustomText(
-                    text: 'Welcome Back , Discover a new way to eat',
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 13,
-                  ),
+                  text: 'Welcome Back, Discover The Fast Food',
+                  color: AppColors.primaryColor,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                ),
                   Gap(60),
-                  CustomTextFormField(
-                    hintText: 'Email Address',
-                    isPassword: false,
-                    controller: emailController,
-                  ),
-                  Gap(20),
-                  CustomTextFormField(
-                    hintText: 'Password',
-                    isPassword: true,
-                    controller: passwordController,
-                  ),
-                  Gap(30),
-                  CustomAuthButton(
-                    text: 'Login',
-                    onTap: () {
-                      //    if (formKey.currentState!.validate()) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => Root()),
-                      );
-                        print('Login');
-                      //  }
-                    },
-                  ),
-                  Gap(50),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomText(
-                        text: 'Don\'t have an account? ',
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 13,
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30),
+                        topLeft: Radius.circular(30),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SignupView(),
-                            ),
-                          );
-                        },
-                        child: CustomText(
-                          text: 'Signup',
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Gap(30),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => Root()),
-                      );
-                      print('Guest');
-                    },
-                    child: CustomText(
-                      text: 'Continue as Guest',
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13,
                     ),
-                  )
-                ],
-                
-              ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Gap(30),
+                          CustomTxtfield(
+                            controller: emailController,
+                            hint: 'Email Address',
+                            isPassword: false,
+                          ),
+                          Gap(15),
+                          CustomTxtfield(
+                            controller: passwordController,
+                            hint: 'Password',
+                            isPassword: true,
+                          ),
+                          Gap(20),
+                          CustomAuthButton(
+                            color: AppColors.primaryColor,
+                            textColor: Colors.white,
+                            text: 'Login',
+                            onTap: () {
+                              if (formKey.currentState!.validate()) {
+                                print('success login');
+                              }
+                            },
+                          ),
+                          Gap(15),
+
+                          /// go to Signup
+                          CustomAuthButton(
+                            textColor: AppColors.primaryColor,
+                            color: Colors.white,
+                            text: 'Create Account ?',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (c) {
+                                    return SignupView();
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                          /// Guest
+                          Gap(20),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (c) {
+                                    return Root();
+                                  },
+                                ),
+                              );
+                            },
+                            child: CustomText(
+                              text: 'Continue as a guest ?',
+                              fontSize: 13,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

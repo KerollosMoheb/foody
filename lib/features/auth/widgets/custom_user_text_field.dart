@@ -13,18 +13,19 @@ class CustomUserTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       cursorColor: Colors.white,
+      cursorHeight: 20,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: TextStyle(color: Colors.white),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 2),
-          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.white),
+          borderRadius: BorderRadius.circular(15),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(15),
         ),
-        labelText: labelText,
-        labelStyle: TextStyle(color: Colors.white),
       ),
     );
   }

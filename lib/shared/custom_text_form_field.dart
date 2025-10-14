@@ -2,33 +2,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/core/constants/app_colors.dart';
 
-class CustomTextFormField extends StatefulWidget {
-  const CustomTextFormField({
+class CustomTxtfield extends StatefulWidget {
+  const CustomTxtfield({
     super.key,
-    required this.hintText,
+    required this.hint,
     required this.isPassword,
     required this.controller,
   });
-  final String hintText;
+  final String hint;
   final bool isPassword;
   final TextEditingController controller;
 
   @override
-  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+  State<CustomTxtfield> createState() => _CustomTxtfieldState();
 }
 
-class _CustomTextFormFieldState extends State<CustomTextFormField> {
-  late bool _obsecureText;
+class _CustomTxtfieldState extends State<CustomTxtfield> {
+  late bool _obscureText;
 
   @override
   void initState() {
+    _obscureText = widget.isPassword;
     super.initState();
-    _obsecureText = widget.isPassword;
   }
-
-  void _toggleObsecureText() {
+  void _togglePassword() {
     setState(() {
-      _obsecureText = !_obsecureText;
+      _obscureText = !_obscureText;
     });
   }
 
@@ -36,31 +35,38 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'This field is required';
+      cursorHeight: 20,
+      cursorColor: AppColors.primaryColor,
+      validator: (v) {
+        if (v == null || v.isEmpty) {
+          return 'please fill ${widget.hint}';
         }
         return null;
       },
-      obscureText: _obsecureText,
-      cursorColor: AppColors.primaryColor,
+      obscureText: _obscureText,
       decoration: InputDecoration(
         suffixIcon: widget.isPassword
             ? GestureDetector(
-                onTap: _toggleObsecureText,
-                child: Icon(CupertinoIcons.eye),
+                onTap: _togglePassword,
+                child: Icon(CupertinoIcons.eye, color: AppColors.primaryColor),
               )
             : null,
-        hintText: widget.hintText,
-        fillColor: Colors.white,
-        filled: true,
-        hintStyle: TextStyle(color: Colors.grey),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.grey),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: Colors.grey),
         ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        hintText: widget.hint,
+        hintStyle: TextStyle(color: AppColors.primaryColor),
+        fillColor: Colors.white,
+        filled: true,
       ),
     );
   }

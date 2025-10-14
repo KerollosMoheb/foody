@@ -4,9 +4,11 @@ import 'package:food_app/core/constants/app_colors.dart';
 import 'package:food_app/shared/custom_text.dart';
 
 class CustomAuthButton extends StatelessWidget {
-  const CustomAuthButton({super.key, required this.text, this.onTap});
+  const CustomAuthButton({super.key, required this.text, this.onTap, this.color, this.textColor});
   final String text;
   final Function()? onTap;
+  final Color? color;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -14,19 +16,20 @@ class CustomAuthButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 55,
-        width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(7),
+            color: color ??  Colors.white,
+            borderRadius: BorderRadius.circular(7),
+            border: Border.all(
+              color: Colors.grey,
+            ),
         ),
-        child: Center(
-          child: CustomText(
-            text: text,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: AppColors.primaryColor,
-          ),
-        ),
+        width: double.infinity,
+        child: Center(child: CustomText(
+          text: text,
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          color: textColor ??  AppColors.primaryColor,
+        )),
       ),
     );
   }
