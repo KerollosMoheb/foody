@@ -31,11 +31,7 @@ class CardItem extends StatelessWidget {
           children: [
             Image.asset(image, width: 185),
             Gap(10),
-            CustomText(
-              text: title,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+            CustomText(text: title, fontSize: 16, fontWeight: FontWeight.bold),
             CustomText(
               text: description,
               fontSize: 16,
@@ -46,7 +42,7 @@ class CardItem extends StatelessWidget {
               children: [
                 CustomText(text: '⭐ $rating'),
                 Spacer(),
-                Icon(CupertinoIcons.heart_fill, color: AppColors.primaryColor),
+                Icon(CupertinoIcons.heart, color: AppColors.primaryColor),
               ],
             ),
           ],

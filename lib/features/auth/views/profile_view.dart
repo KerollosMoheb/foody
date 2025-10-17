@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/core/constants/app_colors.dart';
+import 'package:food_app/features/auth/views/login_view.dart';
 import 'package:food_app/features/auth/widgets/custom_user_text_field.dart';
 import 'package:food_app/shared/custom_text.dart';
 import 'package:gap/gap.dart';
@@ -145,24 +146,39 @@ class _ProfileViewState extends State<ProfileView> {
                     ],
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: AppColors.primaryColor, width: 2),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: Row(
-                    children: [
-                      CustomText(
-                        text: 'Logout',
-                        color: AppColors.primaryColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (c) {
+                          return LoginView();
+                        },
                       ),
-                      Gap(5),
-                      Icon(Icons.logout, color: AppColors.primaryColor),
-                    ],
+                    );
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: AppColors.primaryColor,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Row(
+                      children: [
+                        CustomText(
+                          text: 'Logout',
+                          color: AppColors.primaryColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        Gap(5),
+                        Icon(Icons.logout, color: AppColors.primaryColor),
+                      ],
+                    ),
                   ),
                 ),
               ],
