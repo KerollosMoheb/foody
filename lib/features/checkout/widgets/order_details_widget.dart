@@ -1,95 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/shared/custom_text.dart';
+import 'package:gap/gap.dart';
 
 class OrderDetailsWidget extends StatelessWidget {
   const OrderDetailsWidget({
     super.key,
     required this.order,
     required this.taxes,
-    required this.deliveryFees,
+    required this.fees,
     required this.total,
   });
-  final String order;
-  final String taxes;
-  final String deliveryFees;
-  final String total;
+  final String order, taxes , fees , total;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          child: checkoutWidget(
-            text: 'Order',
-            price: order,
-            isBold: false,
-            color: Colors.grey.shade500,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          child: checkoutWidget(
-            text: 'Taxes',
-            price: taxes,
-            isBold: false,
-            color: Colors.grey.shade500,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          child: checkoutWidget(
-            text: 'Delivery fees',
-            price: deliveryFees,
-            isBold: false,
-            color: Colors.grey.shade500,
-          ),
-        ),
+        checkoutWidget('order', order , false , false),
+        Gap(10),
+        checkoutWidget('Taxes', taxes, false , false),
+        Gap(10),
+        checkoutWidget('Delivery fees', fees, false , false),
+        Gap(10),
         Divider(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          child: checkoutWidget(
-            text: 'Total',
-            price: total,
-            isBold: true,
-            color: Colors.black,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          child: checkoutWidget(
-            text: 'Estimated delivery time:',
-            price: '15 - 30 mins',
-            isBold: true,
-            color: Colors.black,
-          ),
-        ),
+        Gap(10),
+        checkoutWidget('Total:', total, true , false),
+        Gap(10),
+        checkoutWidget('Estimated delivery time:', '15 - 30 mins', true , true),
       ],
     );
   }
 }
 
-Widget checkoutWidget({
-  required String text,
-  required String price,
-  required bool isBold,
-  required Color color,
-}) {
+
+Widget checkoutWidget(title , price , isBold , isSmall) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
+
       CustomText(
-        text: text,
-        fontSize: 18,
-        color: color,
+        text: title,
+        fontSize: isSmall ? 13 : 15,
         fontWeight: isBold ? FontWeight.bold : FontWeight.w400,
+        color: isBold ? Colors.black : Colors.grey.shade600,
       ),
+
+
       CustomText(
-        text: price,
-        fontSize: 18,
-        color: color,
+        text: '$price \$',
+        fontSize: isSmall ? 10 : 15,
         fontWeight: isBold ? FontWeight.bold : FontWeight.w400,
+        color: isBold ? Colors.black : Colors.grey.shade600,
       ),
+
+
     ],
   );
 }

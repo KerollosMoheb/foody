@@ -9,55 +9,70 @@ class OrderHistoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 0,
+        scrolledUnderElevation: 0,
+        backgroundColor: Colors.white,
+      ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: ListView.builder(
-          padding: EdgeInsets.only(bottom: 100),
+          padding: const EdgeInsets.only(bottom: 120, top: 10),
           itemCount: 3,
           itemBuilder: (context, index) {
             return Card(
               color: Colors.white,
-              elevation: 3,
-              shadowColor: Colors.grey.shade500,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
               child: Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 20,
+                ),
                 child: Column(
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Image.asset('assets/test/hamburger.png', height: 100),
-                        Column(
+                        Stack(
+                          clipBehavior: Clip.none,
                           children: [
-                            CustomText(
-                              text: 'Hamburger',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                            Positioned(
+                              bottom: -5,
+                              right: 0,
+                              left: 0,
+                              child: Image.asset('assets/icon/shadow.png'),
                             ),
-                            CustomText(
-                              text: 'Veggi Burger',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            CustomText(
-                              text: 'Qty: 10',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            CustomText(
-                              text: '\$10.00',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                            Center(
+                              child: Image.asset(
+                                'assets/test/test.png',
+                                width: 90,
+                                height: 90,
+                              ),
                             ),
                           ],
+                        ),
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: 'Hamburger Hamburger',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                              CustomText(text: 'Qty : X3', fontSize: 14),
+                              CustomText(text: 'Price : 20\$', fontSize: 14),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                     Gap(20),
-                    CustomButton(text: 'Reorder', width: double.infinity),
+                    CustomButton(
+                      height: 45,
+                      text: 'Order Again',
+                      color: Colors.grey.shade400,
+                      width: double.infinity,
+                    ),
                   ],
                 ),
               ),

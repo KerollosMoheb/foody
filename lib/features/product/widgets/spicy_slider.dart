@@ -13,7 +13,7 @@ class SpicySlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Image.asset('assets/detail/sandwich_detail.png', height: 300),
+        Image.asset('assets/detail/sandwich_detail.png', height: 250),
         Spacer(),
         Column(
           children: [
@@ -30,7 +30,7 @@ class SpicySlider extends StatelessWidget {
               activeColor: AppColors.primaryColor,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
               children: [
                 CustomText(text: '🥶'),
                 Gap(120),

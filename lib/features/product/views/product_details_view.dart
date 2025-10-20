@@ -53,10 +53,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                 child: Row(
                   children: List.generate(
                     6,
-                    (index) => ToppingCard(
-                      imageUrl: 'assets/test/tomato.png',
-                      title: 'Tomato',
-                      onAdd: () {},
+                    (index) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ToppingCard(
+                        imageUrl: 'assets/test/tomato.png',
+                        title: 'Tomato',
+                        onAdd: () {},
+                      ),
                     ),
                   ),
                 ),
@@ -73,10 +76,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                 child: Row(
                   children: List.generate(
                     6,
-                    (index) => ToppingCard(
-                      imageUrl: 'assets/test/fries.png',
-                      title: 'Fries',
-                      onAdd: () {},
+                    (index) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ToppingCard(
+                        imageUrl: 'assets/test/fries.png',
+                        title: 'Fries',
+                        onAdd: () {},
+                      ),
                     ),
                   ),
                 ),
@@ -105,20 +111,20 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: 'Total',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade500,
-                      ),
-                      CustomText(text: '\$18.9', fontSize: 32),
-                    ],
+                  CustomText(
+                    text: 'Total',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey.shade500,
                   ),
-                  Spacer(),
+                  CustomText(text: '\$18.9', fontSize: 32),
+                ],
+              ),
+              Spacer(),
               CustomButton(text: 'Add to Cart', onTap: () {}, width: 150),
             ],
           ),

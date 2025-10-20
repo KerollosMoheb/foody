@@ -1,27 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_app/core/constants/app_colors.dart';
 
 class SearchField extends StatelessWidget {
   const SearchField({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      elevation: 3,
-      shadowColor: Colors.grey.shade500,
-      borderRadius: BorderRadius.circular(15),
+    return SizedBox(
+      height: 40,
       child: TextField(
+        cursorHeight: 15,
         decoration: InputDecoration(
-          hintText: 'Search',
-          hintStyle: TextStyle(color: Colors.grey.shade500),
-          prefixIcon: Icon(CupertinoIcons.search),
-          border: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-            borderRadius: BorderRadius.circular(15),
+          filled: true,
+          contentPadding: EdgeInsets.zero,
+          hintText: 'Search..',
+          fillColor: Colors.transparent,
+          prefixIcon: Icon(CupertinoIcons.search, size: 18),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(40),
+            borderSide: BorderSide(
+              color: AppColors.primaryColor.withOpacity(0.3),
+            ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(40),
+            borderSide: BorderSide(color: Colors.black),
           ),
         ),
       ),

@@ -10,6 +10,7 @@ import 'package:food_app/root.dart';
 import 'package:food_app/shared/custom_snack.dart';
 import 'package:food_app/shared/custom_text.dart';
 import 'package:food_app/shared/custom_text_form_field.dart';
+import 'package:food_app/shared/glass_container.dart';
 import 'package:gap/gap.dart';
 
 class SignupView extends StatefulWidget {
@@ -21,131 +22,149 @@ class SignupView extends StatefulWidget {
 
 class _SignupViewState extends State<SignupView> {
   bool isLoading = false;
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  AuthRepo authRepo = AuthRepo();
+
+  Future<void> signUp() async {
+    setState(() => isLoading = true);
+    try {
+      final user = await authRepo.signup(
+        nameController.text.trim(),
+        emailController.text.trim(),
+        passwordController.text.trim(),
+      );
+      if (user != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Root()),
+        );
+      }
+    } catch (e) {
+      String errorMsg = "Something Went Wrong";
+      if (e is ApiError) {
+        errorMsg = e.message;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(customSnack(errorMsg));
+    } finally {
+      setState(() => isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController nameController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-    AuthRepo authRepo = AuthRepo();
-
-    Future<void> signUp() async {
-      setState(() => isLoading = true);
-      try {
-        final user = await authRepo.signUp(
-          nameController.text.trim(),
-          emailController.text.trim(),
-          passwordController.text.trim(),
-        );
-        if (user != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Root()),
-          );
-        }
-      } catch (e) {
-        String errorMsg = "Something Went Wrong";
-        if (e is ApiError) {
-          errorMsg = e.message;
-        }
-        ScaffoldMessenger.of(context).showSnackBar(customSnack(errorMsg));
-      } finally {
-        setState(() => isLoading = false);
-      }
-    }
-
     return PopScope(
       canPop: false,
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
+          appBar: AppBar(toolbarHeight: 0.0, backgroundColor: Colors.white),
           backgroundColor: Colors.white,
           body: Form(
             key: formKey,
-            child: Column(
-              children: [
-                Gap(200),
-                SvgPicture.asset(
-                  'assets/logo/logo.svg',
-                  color: AppColors.primaryColor,
-                ),
-                CustomText(
-                  text: 'Welcome to our Food App',
-                  color: AppColors.primaryColor,
-                ),
-                Gap(100),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Gap(100),
+                  SvgPicture.asset(
+                    'assets/logo/logo.svg',
+                    color: AppColors.primaryColor,
+                  ),
+                  Gap(10),
+                  Center(
+                    child: CustomText(
+                      text: 'Welcome to our Food App',
                       color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(30),
-                        topLeft: Radius.circular(30),
-                      ),
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Gap(30),
-                          CustomTxtfield(
-                            controller: nameController,
-                            hint: 'Name',
-                            isPassword: false,
-                          ),
-                          Gap(15),
-                          CustomTxtfield(
-                            controller: emailController,
-                            hint: 'Email Address',
-                            isPassword: false,
-                          ),
-                          Gap(15),
-                          CustomTxtfield(
-                            controller: passwordController,
-                            hint: 'Password',
-                            isPassword: true,
-                          ),
-                          Gap(20),
-
-                          /// Sign up
-                          isLoading
-                              ? CupertinoActivityIndicator(color: Colors.white)
-                              : CustomAuthButton(
-                                  color: AppColors.primaryColor,
-                                  textColor: Colors.white,
-                                  text: 'Sign up',
-                                  onTap: () {
-                                    if (formKey.currentState!.validate()) {
-                                      signUp();
-                                    }
-                                  },
-                                ),
-                          Gap(15),
-
-                          /// go to login
-                          CustomAuthButton(
-                            textColor: AppColors.primaryColor,
-                            color: Colors.white,
-                            text: 'Go To Login ?',
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (c) {
-                                    return LoginView();
-                                  },
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
                     ),
                   ),
-                ),
-              ],
+                  Gap(40),
+                  glassContainer(
+                    child: Column(
+                      children: [
+                        Gap(30),
+                        CustomTxtfield(
+                          controller: nameController,
+                          hint: 'Name',
+                          isPassword: false,
+                        ),
+                        Gap(10),
+                        CustomTxtfield(
+                          controller: emailController,
+                          hint: 'Email Address',
+                          isPassword: false,
+                        ),
+                        Gap(10),
+                        CustomTxtfield(
+                          controller: passwordController,
+                          hint: 'Password',
+                          isPassword: true,
+                        ),
+                        Gap(20),
+
+                        /// Sign up
+                        isLoading
+                            ? CupertinoActivityIndicator()
+                            : CustomAuthButton(
+                                color: AppColors.primaryColor,
+                                textColor: Colors.white,
+                                text: 'Sign up',
+                                onTap: signUp,
+                              ),
+
+                        Gap(10),
+                        Row(
+                          children: [
+                            ///  Login
+                            Expanded(
+                              child: CustomAuthButton(
+                                textColor: AppColors.primaryColor,
+                                color: Colors.white,
+                                text: 'Login',
+                                onTap: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (c) {
+                                        return LoginView();
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            Gap(15),
+
+                            /// Guest
+                            Expanded(
+                              child: CustomAuthButton(
+                                color: Colors.white,
+                                textColor: AppColors.primaryColor,
+                                text: 'Guest',
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (c) {
+                                        return Root();
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        Gap(10),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
