@@ -21,43 +21,39 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  bool isLoading = false;
-
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
 
+  bool isLoading = false;
   AuthRepo authRepo = AuthRepo();
-
   Future<void> login() async {
-    setState(() => isLoading = true);
-    try {
-      final user = await authRepo.login(
-        emailController.text.trim(),
-        passwordController.text.trim(),
-      );
-      if (user != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Root()),
+    if (formKey.currentState!.validate()) {
+      setState(() => isLoading = true);
+      try {
+        final user = await authRepo.login(
+          emailController.text.trim(),
+          passController.text.trim(),
         );
+        if (user != null) {
+          Navigator.push(context, MaterialPageRoute(builder: (c) => Root()));
+        }
+        setState(() => isLoading = false);
+      } catch (e) {
+        setState(() => isLoading = false);
+        String errorMsg = 'unhandled error in login';
+        if (e is ApiError) {
+          errorMsg = e.message;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(customSnack(errorMsg));
       }
-    } catch (e) {
-      String errorMsg = "Something Went Wrong";
-      if (e is ApiError) {
-        errorMsg = e.message;
-      }
-      ScaffoldMessenger.of(context).showSnackBar(customSnack(errorMsg));
-    } finally {
-      setState(() => isLoading = false);
     }
   }
 
   @override
   void initState() {
     emailController.text = 'koko@gmail.com';
-    passwordController.text = '123456789';
+    passController.text = '123456789';
     super.initState();
   }
 
@@ -100,7 +96,7 @@ class _LoginViewState extends State<LoginView> {
                         ),
                         Gap(10),
                         CustomTxtfield(
-                          controller: passwordController,
+                          controller: passController,
                           hint: 'Password',
                           isPassword: true,
                         ),

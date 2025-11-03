@@ -15,8 +15,7 @@ class SplashView extends StatefulWidget {
 
 class _SplashViewState extends State<SplashView>
     with SingleTickerProviderStateMixin {
-  double _opacity = 0;
-
+  double _opacity = 0.0;
   AuthRepo authRepo = AuthRepo();
 
   Future<void> _checkLogin() async {
@@ -26,7 +25,7 @@ class _SplashViewState extends State<SplashView>
       if (authRepo.isGuest) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (c) => Root()),
+          MaterialPageRoute(builder: (c) => LoginView()),
         );
       } else if (user != null) {
         Navigator.pushReplacement(

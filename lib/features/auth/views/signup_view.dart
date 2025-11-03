@@ -21,38 +21,34 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
-  bool isLoading = false;
-
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
+  TextEditingController passController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  bool isLoading = false;
   AuthRepo authRepo = AuthRepo();
-
-  Future<void> signUp() async {
-    setState(() => isLoading = true);
-    try {
-      final user = await authRepo.signup(
-        nameController.text.trim(),
-        emailController.text.trim(),
-        passwordController.text.trim(),
-      );
-      if (user != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Root()),
+  Future<void> signup() async {
+    if (formKey.currentState!.validate()) {
+      try {
+        setState(() => isLoading = true);
+        final user = await authRepo.signup(
+          nameController.text.trim(),
+          emailController.text.trim(),
+          passController.text.trim(),
         );
+        if (user != null) {
+          Navigator.push(context, MaterialPageRoute(builder: (c) => Root()));
+        }
+        setState(() => isLoading = false);
+      } catch (e) {
+        setState(() => isLoading = false);
+        String errMsg = 'Error in Register';
+        if (e is ApiError) {
+          errMsg = e.message;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(customSnack(errMsg));
       }
-    } catch (e) {
-      String errorMsg = "Something Went Wrong";
-      if (e is ApiError) {
-        errorMsg = e.message;
-      }
-      ScaffoldMessenger.of(context).showSnackBar(customSnack(errorMsg));
-    } finally {
-      setState(() => isLoading = false);
     }
   }
 
@@ -100,7 +96,7 @@ class _SignupViewState extends State<SignupView> {
                         ),
                         Gap(10),
                         CustomTxtfield(
-                          controller: passwordController,
+                          controller: passController,
                           hint: 'Password',
                           isPassword: true,
                         ),
@@ -113,7 +109,7 @@ class _SignupViewState extends State<SignupView> {
                                 color: AppColors.primaryColor,
                                 textColor: Colors.white,
                                 text: 'Sign up',
-                                onTap: signUp,
+                                onTap: signup,
                               ),
 
                         Gap(10),
