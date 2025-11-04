@@ -1,8 +1,7 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:food_app/features/home/data/product_model.dart';
-import 'package:food_app/features/home/data/product_repo.dart';
+import 'package:food_app/features/home/data/models/product_model.dart';
+import 'package:food_app/features/home/data/repo/product_repo.dart';
 import 'package:food_app/features/home/widgets/card_item.dart';
 import 'package:food_app/features/home/widgets/food_category.dart';
 import 'package:food_app/features/home/widgets/search_field.dart';
@@ -122,7 +121,9 @@ class _HomeViewState extends State<HomeView> {
                           context,
                           MaterialPageRoute(
                             builder: (c) {
-                              return ProductDetailsView();
+                              return ProductDetailsView(
+                                productImage: product.image,
+                              );
                             },
                           ),
                         ),

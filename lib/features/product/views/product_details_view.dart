@@ -1,132 +1,202 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_app/core/constants/app_colors.dart';
+import 'package:food_app/features/home/data/models/topping_model.dart';
+import 'package:food_app/features/home/data/repo/product_repo.dart';
 import 'package:food_app/features/product/widgets/spicy_slider.dart';
 import 'package:food_app/features/product/widgets/topping_card.dart';
 import 'package:food_app/shared/custom_button.dart';
 import 'package:food_app/shared/custom_text.dart';
 import 'package:gap/gap.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ProductDetailsView extends StatefulWidget {
-  const ProductDetailsView({super.key});
-
+  const ProductDetailsView({super.key, required this.productImage});
+  final String productImage;
   @override
   State<ProductDetailsView> createState() => _ProductDetailsViewState();
 }
 
 class _ProductDetailsViewState extends State<ProductDetailsView> {
-  double spicyValue = 0.7;
+  double value = 0.5;
+  int? selectedToppingIndex;
+  int? selectedOptionsIndex;
+
+  List<ToppingModel>? toppings;
+  List<ToppingModel>? options;
+  ProductRepo productRepo = ProductRepo();
+
+  Future<void> getToppings() async {
+    final response = await productRepo.getToppings();
+    setState(() {
+      toppings = response;
+    });
+  }
+
+  Future<void> getOptions() async {
+    final response = await productRepo.getOptions();
+    setState(() {
+      options = response;
+    });
+  }
+
+  @override
+  void initState() {
+    getToppings();
+    getOptions();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SpicySlider(
-                value: spicyValue,
-                onChanged: (value) {
-                  setState(() {
-                    spicyValue = value;
-                  });
-                },
-              ),
-              Gap(50),
-              CustomText(
-                text: 'Toppings',
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-              ),
-              Gap(10),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(
-                    6,
-                    (index) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ToppingCard(
-                        imageUrl: 'assets/test/tomato.png',
-                        title: 'Tomato',
-                        onAdd: () {},
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Gap(30),
-              CustomText(
-                text: 'Side Options',
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-              ),
-              Gap(10),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(
-                    6,
-                    (index) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ToppingCard(
-                        imageUrl: 'assets/test/fries.png',
-                        title: 'Fries',
-                        onAdd: () {},
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Gap(150),
-            ],
-          ),
-        ),
-      ),
-      bottomSheet: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade800,
-              blurRadius: 15,
-              offset: Offset(0, 0),
+    return Skeletonizer(
+      enabled: widget.productImage.isEmpty,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          scrolledUnderElevation: 0.0,
+          toolbarHeight: 18,
+          leading: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Icon(
+              Icons.arrow_circle_left_outlined,
+              size: 20,
+              color: AppColors.primaryColor,
             ),
-          ],
+          ),
         ),
-        height: 120,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: 'Total',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey.shade500,
+
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.zero,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SpicySlider(
+                  value: value,
+                  img: widget.productImage,
+                  onChanged: (v) => setState(() => value = v),
+                ),
+
+                Gap(40),
+                CustomText(text: 'Toppings', fontSize: 18),
+                Gap(10),
+                SingleChildScrollView(
+                  clipBehavior: Clip.none,
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(toppings?.length ?? 4, (index) {
+                      final isSelected = selectedToppingIndex == index;
+                      final topping = toppings?[index];
+                      if (topping == null) {
+                        return CupertinoActivityIndicator();
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: ToppingCard(
+                          color: isSelected
+                              ? Colors.yellow.withOpacity(0.2)
+                              : AppColors.primaryColor.withOpacity(0.1),
+                          title: topping.name,
+                          imageUrl: topping.image,
+                          onAdd: () =>
+                              setState(() => selectedToppingIndex = index),
+                        ),
+                      );
+                    }),
                   ),
-                  CustomText(text: '\$18.9', fontSize: 32),
-                ],
-              ),
-              Spacer(),
-              CustomButton(text: 'Add to Cart', onTap: () {}, width: 150),
-            ],
+                ),
+
+                Gap(25),
+                CustomText(text: 'Side Options', fontSize: 18),
+                Gap(10),
+                SingleChildScrollView(
+                  clipBehavior: Clip.none,
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(options?.length ?? 4, (index) {
+                      final isSelected = selectedOptionsIndex == index;
+
+                      final option = options?[index];
+                      if (option == null) {
+                        return CupertinoActivityIndicator();
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: ToppingCard(
+                          color: isSelected
+                              ? Colors.yellow.withOpacity(0.2)
+                              : AppColors.primaryColor.withOpacity(0.1),
+                          imageUrl: option.image,
+                          title: option.name,
+                          onAdd: () =>
+                              setState(() => selectedOptionsIndex = index),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+                Gap(200),
+              ],
+            ),
+          ),
+        ),
+
+        bottomSheet: Container(
+          height: 150,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppColors.primaryColor.withOpacity(0.7),
+                AppColors.primaryColor,
+                AppColors.primaryColor,
+                AppColors.primaryColor,
+                AppColors.primaryColor,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
+          ),
+
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: 'Burger Price :',
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
+                    CustomText(
+                      text: '\$ 18.9',
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ],
+                ),
+                CustomButton(
+                  widget: Icon(CupertinoIcons.cart_badge_plus),
+                  gap: 10,
+                  height: 48,
+                  color: Colors.white,
+                  textColor: AppColors.primaryColor,
+                  text: 'Add To Cart',
+                  onTap: () {},
+                ),
+              ],
+            ),
           ),
         ),
       ),
