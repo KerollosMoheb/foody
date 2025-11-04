@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/core/constants/app_colors.dart';
@@ -30,12 +29,19 @@ class CardItem extends StatelessWidget {
             // color: Colors.purple.withAlpha(450).withOpacity(0.3),
             gradient: LinearGradient(
               colors: [
-                AppColors.primaryColor,
-                AppColors.primaryColor,
-                AppColors.primaryColor.withOpacity(0.9),
-                AppColors.primaryColor.withOpacity(0.9),
-                AppColors.primaryColor.withOpacity(0.9),
-                AppColors.primaryColor,
+                Colors.grey.shade500,
+                Colors.grey.shade300,
+                Colors.grey.shade300,
+                Colors.grey.shade300,
+                Colors.grey.shade300,
+                Colors.grey.shade300,
+                Colors.grey.shade500,
+                // AppColors.primaryColor,
+                // AppColors.primaryColor,
+                // AppColors.primaryColor.withOpacity(0.9),
+                // AppColors.primaryColor.withOpacity(0.9),
+                // AppColors.primaryColor.withOpacity(0.9),
+                // AppColors.primaryColor,
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -50,7 +56,7 @@ class CardItem extends StatelessWidget {
                   clipBehavior: Clip.none,
                   children: [
                     Positioned(
-                      bottom: -10,
+                      bottom: -4,
                       right: 10,
                       left: 10,
                       child: Image.asset(
@@ -58,7 +64,9 @@ class CardItem extends StatelessWidget {
                         color: Colors.black26,
                       ),
                     ),
-                    Center(child: Image.asset(image, width: 100, height: 100)),
+                    Center(
+                      child: Image.network(image, width: 130, height: 135),
+                    ),
                   ],
                 ),
                 Gap(15),
@@ -71,12 +79,12 @@ class CardItem extends StatelessWidget {
                         text: title,
                         fontWeight: FontWeight.bold,
                         fontSize: 13,
-                        color: Colors.white,
+                        color: AppColors.primaryColor,
                       ),
                       CustomText(
                         text: description,
                         fontSize: 14,
-                        color: Colors.white,
+                        color: Colors.grey.shade700,
                       ),
                       Gap(10),
                       Row(
@@ -84,19 +92,19 @@ class CardItem extends StatelessWidget {
                           Icon(
                             CupertinoIcons.star_fill,
                             size: 16,
-                            color: Colors.white,
+                            color: Colors.amber,
                           ),
                           Gap(6),
                           CustomText(
                             text: rating,
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: AppColors.primaryColor,
                           ),
                           Spacer(),
                           Icon(
                             CupertinoIcons.heart,
-                            color: Colors.white,
+                            color: AppColors.primaryColor,
                             size: 20,
                           ),
                         ],
