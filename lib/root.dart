@@ -72,6 +72,14 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
           controller: controller,
           physics: NeverScrollableScrollPhysics(),
           children: screens,
+          onPageChanged: (index) {
+            setState(() => currentScreen = index);
+
+            iconControllers[index].forward();
+            for (var i = 0; i < iconControllers.length; i++) {
+              if (i != index) iconControllers[i].reverse();
+            }
+          },
         ),
         bottomNavigationBar: GlassBottomNavBar(
           currentIndex: currentScreen,

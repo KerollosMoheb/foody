@@ -1,5 +1,9 @@
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_app/core/network/api_error.dart';
+import 'package:food_app/features/auth/data/auth_repo.dart';
+import 'package:food_app/features/auth/data/user_model.dart';
 import 'package:food_app/features/home/data/models/product_model.dart';
 import 'package:food_app/features/home/data/repo/product_repo.dart';
 import 'package:food_app/features/home/widgets/card_item.dart';
@@ -7,6 +11,7 @@ import 'package:food_app/features/home/widgets/food_category.dart';
 import 'package:food_app/features/home/widgets/search_field.dart';
 import 'package:food_app/features/home/widgets/user_header.dart';
 import 'package:food_app/features/product/views/product_details_view.dart';
+import 'package:food_app/shared/custom_snack.dart';
 import 'package:gap/gap.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -20,19 +25,40 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   List category = ['All', 'Combos', 'Sliders', 'Classic', 'Drinks'];
   int selectedIndex = 0;
+  final TextEditingController controller = TextEditingController();
 
+  List<ProductModel>? allProducts;
   List<ProductModel>? products;
   ProductRepo productRepo = ProductRepo();
+
+  UserModel? userModel;
+  AuthRepo authRepo = AuthRepo();
+  Future<void> getProfileData() async {
+    try {
+      final user = await authRepo.getProfileData();
+      setState(() {
+        userModel = user;
+      });
+    } catch (e) {
+      String errorMsg = 'Error in Profile';
+      if (e is ApiError) {
+        errorMsg = e.message;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(customSnack(errorMsg));
+    }
+  }
 
   Future<void> getProducts() async {
     final response = await productRepo.getProducts();
     setState(() {
+      allProducts = response;
       products = response;
     });
   }
 
   @override
   void initState() {
+    getProfileData();
     getProducts();
     super.initState();
   }
@@ -63,18 +89,6 @@ class _HomeViewState extends State<HomeView> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white.withAlpha(450).withOpacity(0.1),
-                        // gradient:  LinearGradient(
-                        //     colors: [
-                        //   AppColors.primary,
-                        //   AppColors.primary,
-                        //   AppColors.primary.withOpacity(0.9),
-                        //   AppColors.primary.withOpacity(0.9),
-                        //   AppColors.primary.withOpacity(0.9),
-                        //   AppColors.primary,
-                        // ],
-                        //     begin: Alignment.topCenter,
-                        //     end: Alignment.bottomCenter
-                        // ),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(
@@ -83,7 +97,29 @@ class _HomeViewState extends State<HomeView> {
                           left: 20,
                         ),
                         child: Column(
-                          children: [UserHeader(), Gap(20), SearchField()],
+                          children: [
+                            UserHeader(
+                              userName: userModel?.name ?? "User",
+                              userImage:
+                                  userModel?.image.toString() ??
+                                  "https://www.pngall.com/wp-content/uploads/5/Profile-PNG-High-Quality-Image.png",
+                            ),
+                            Gap(20),
+                            SearchField(
+                              controller: controller,
+                              onChanged: (value) {
+                                setState(() {
+                                  products = allProducts
+                                      ?.where(
+                                        (product) => product.name
+                                            .toLowerCase()
+                                            .contains(value.toLowerCase()),
+                                      )
+                                      .toList();
+                                });
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -113,9 +149,12 @@ class _HomeViewState extends State<HomeView> {
                     crossAxisSpacing: 10,
                   ),
                   delegate: SliverChildBuilderDelegate(
-                    childCount: products?.length ?? 0,
+                    childCount: products?.length ?? 6,
                     (context, index) {
-                      final product = products![index];
+                      final product = products?[index];
+                      if (product == null) {
+                        return CupertinoActivityIndicator();
+                      }
                       return GestureDetector(
                         onTap: () => Navigator.push(
                           context,
@@ -123,6 +162,8 @@ class _HomeViewState extends State<HomeView> {
                             builder: (c) {
                               return ProductDetailsView(
                                 productImage: product.image,
+                                productId: product.id,
+                                productPrice: product.price,
                               );
                             },
                           ),

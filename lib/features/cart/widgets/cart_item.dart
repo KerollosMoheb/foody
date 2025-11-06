@@ -14,6 +14,7 @@ class CartItem extends StatelessWidget {
     this.onMinus,
     this.onRemove,
     required this.number,
+    required this.isLoading,
   });
   final String image;
   final String title;
@@ -22,6 +23,7 @@ class CartItem extends StatelessWidget {
   final Function()? onMinus;
   final Function()? onRemove;
   final int number;
+  final bool isLoading;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -29,17 +31,19 @@ class CartItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset(image, width: 80),
-              CustomText(
-                text: title,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-              ),
-              CustomText(text: description, fontSize: 13),
-            ],
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.network(image, width: 80),
+                CustomText(
+                  text: title,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+                CustomText(text: description, fontSize: 13),
+              ],
+            ),
           ),
 
           Column(
@@ -89,9 +93,14 @@ class CartItem extends StatelessWidget {
                     color: AppColors.primaryColor,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Center(
-                    child: CustomText(text: 'Remove', color: Colors.white),
-                  ),
+                  child: isLoading
+                      ? CupertinoActivityIndicator(color: Colors.white)
+                      : Center(
+                          child: CustomText(
+                            text: 'Remove',
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ),
             ],

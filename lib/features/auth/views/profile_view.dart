@@ -7,6 +7,7 @@ import 'package:food_app/features/auth/data/auth_repo.dart';
 import 'package:food_app/features/auth/data/user_model.dart';
 import 'package:food_app/features/auth/views/login_view.dart';
 import 'package:food_app/features/auth/widgets/custom_user_text_field.dart';
+import 'package:food_app/shared/custom_button.dart';
 import 'package:food_app/shared/custom_snack.dart';
 import 'package:food_app/shared/custom_text.dart';
 import 'package:gap/gap.dart';
@@ -447,33 +448,22 @@ class _ProfileViewState extends State<ProfileView> {
         ),
       );
     } else if (isGuest) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(child: Text('Guest Mode')),
-          SizedBox(height: 20),
-          GestureDetector(
-            onTap: logout,
-            child: Container(
-              height: 60,
-              width: 100,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(10),
+      return Padding(
+        padding: const EdgeInsets.all(40),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(child: Text('Guest Mode')),
+            Gap(20),
+            CustomButton(
+              onTap: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (c) => LoginView()),
               ),
-              child: isLoadingLogout
-                  ? CupertinoActivityIndicator(color: AppColors.primaryColor)
-                  : Center(
-                      child: CustomText(
-                        text: 'Logout',
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
+              text: 'Go to Login',
             ),
-          ),
-        ],
+          ],
+        ),
       );
     }
     return SizedBox();

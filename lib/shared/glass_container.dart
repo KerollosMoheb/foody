@@ -26,10 +26,7 @@ Widget glassContainer({required Widget child}) {
             ],
           ),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            width: 1.2,
-            color: Colors.black.withOpacity(0.2),
-          ),
+          border: Border.all(width: 1.2, color: Colors.black.withOpacity(0.2)),
         ),
         child: child,
       ),

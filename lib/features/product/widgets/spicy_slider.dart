@@ -4,7 +4,12 @@ import 'package:food_app/shared/custom_text.dart';
 import 'package:gap/gap.dart';
 
 class SpicySlider extends StatefulWidget {
-  const SpicySlider({super.key, required this.value, required this.onChanged, required this.img});
+  const SpicySlider({
+    super.key,
+    required this.value,
+    required this.onChanged,
+    required this.img,
+  });
   final double value;
   final ValueChanged<double> onChanged;
   final String img;
@@ -14,7 +19,6 @@ class SpicySlider extends StatefulWidget {
 }
 
 class _SpicySliderState extends State<SpicySlider> {
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -26,13 +30,13 @@ class _SpicySliderState extends State<SpicySlider> {
         ),
 
         Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 40.0),
+          padding: EdgeInsets.symmetric(horizontal: 40.0),
           child: SliderTheme(
             data: SliderTheme.of(context).copyWith(
               thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 3),
               overlayShape: const RoundSliderOverlayShape(overlayRadius: 10),
               trackHeight: 3,
-           ),
+            ),
 
             child: Slider(
               min: 0,
@@ -45,20 +49,25 @@ class _SpicySliderState extends State<SpicySlider> {
           ),
         ),
 
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 53),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomText(text: 'Cold 🥶', fontWeight:  FontWeight.bold,fontSize: 12,),
+              CustomText(
+                text: 'Cold 🥶',
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
               Gap(100),
-              CustomText(text: '🌶️ Hot', fontWeight: FontWeight.bold, fontSize: 12,),
+              CustomText(
+                text: '🌶️ Hot',
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
             ],
           ),
         ),
-
-
       ],
     );
   }
